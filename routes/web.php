@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProductController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session as FacadesSession;
 
@@ -21,13 +22,15 @@ use Illuminate\Support\Facades\Session as FacadesSession;
 //     Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
 //     Route::get('/admin/manage-users', [AdminController::class, 'index']);
 // });
-Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('auth.redirect');
+// Route::get('/admin/dashboard', [AdminController::class, 'index'])->middleware('auth.redirect');
 Route::get('/login', function () {
     return view('login'); // return your login view here
 })->name('login');
 
 Route::middleware(['auth.redirect'])->group(function () {
-    Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::get('/product/dashboard', [ProductController::class, 'dashboard'])->name('product.dashboard');
+    Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
+    Route::post('/product', [ProductController::class, 'store'])->name('product.store');
     // Add other admin routes here
 });
 

@@ -3,13 +3,13 @@
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">
-            <img class="detail-img img-fluid" src="{{ $product['gallery'] }}" alt="{{ $product['name'] }}">
+            <img class="detail-img img-fluid" src="{{ asset('storage/' . $product['gallery']) }}" alt="{{ $product['name'] }}">
         </div>
         <div class="col-md-6 d-flex flex-column justify-content-between">
             <div>
                 <h3 class="mb-3">{{ $product['name'] }}</h3>
                 <h4 class="text-success">Price: ${{ number_format($product['price'], 2) }}</h4>
-                <h5>Category: {{ $product['category'] }}</h5>
+                <h5 style=" text-transform: capitalize;">Category: {{ $product['category'] }}</h5>
                 <p class="mt-3">{{ $product['description'] }}</p>
             </div>
             <div>

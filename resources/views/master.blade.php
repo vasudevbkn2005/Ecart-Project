@@ -138,8 +138,8 @@
                                 <li><a class="dropdown-item" href="#" data-bs-toggle="collapse" data-bs-target="#profileSidebar">Profile</a></li>
                                 <li><a class="dropdown-item" href="/myorders">My Orders</a></li>
                                 @if($user['role'] == 'admin')
-                                    <li><a class="dropdown-item" href="/admin/dashboard">Admin Dashboard</a></li>
-                                    <li><a class="dropdown-item" href="/admin/manage-users">Manage Users</a></li>
+                                    <li><a class="dropdown-item" href="/product/dashboard">Admin Dashboard</a></li>
+                                    <li><a class="dropdown-item" href="/product/manage-users">Manage Users</a></li>
                                 @endif
                                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
                             </ul>

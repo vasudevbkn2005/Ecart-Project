@@ -17,7 +17,7 @@
                                 <div class="row border rounded p-3 align-items-center shadow-sm">
                                     <div class="col-md-2 col-sm-4 text-center">
                                         <a href="detail/{{ $item->id }}" class="text-decoration-none">
-                                            <img class="img-fluid rounded" src="{{ $item->gallery }}" alt="{{ $item->name }}">
+                                            <img class="img-fluid rounded" src="{{ asset('storage/' . $item->gallery) }}" alt="{{ $item->name }}">
                                         </a>
                                     </div>
                                     <div class="col-md-5 col-sm-8">

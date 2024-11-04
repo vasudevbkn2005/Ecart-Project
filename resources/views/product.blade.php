@@ -7,22 +7,18 @@
     </div>
     <div class="trending-wrapping">
         <div class="d-flex flex-wrap justify-content-center">
-            @foreach ($products as $item)
-                <div class="trending-item col-md-3 col-sm-6 mb-4">
-                    <a href="detail/{{ $item['id'] }}" class="text-decoration-none">
-                        <img class="trending-image img-fluid" src="{{ $item['gallery'] }}" alt="{{ $item['name'] }}">
-                        <div class="p-3">
-                            <h5 class="text-black">{{ $item['name'] }}</h5>
-                            <p class="text-muted">{{ Str::limit($item['description'], 50) }}</p>
-                            {{-- <form action="/add_to_cart" method="POST" class="mb-3">
-                                @csrf
-                                <input type="hidden" name="product_id" value="{{ $item['id'] }}">
-                                <button class="btn btn-success w-100">Add To Cart</button>
-                            </form> --}}
-                        </div>
-                    </a>
-                </div>
-            @endforeach
+           @foreach ($products as $item)
+    <div class="trending-item col-md-3 col-sm-6 mb-4">
+        <a href="detail/{{ $item['id'] }}" class="text-decoration-none">
+            <img class="trending-image img-fluid" src="{{ asset('storage/' . $item['gallery']) }}" alt="{{ $item['name'] }}">
+            <div class="p-3">
+                <h5 class="text-black">{{ $item['name'] }}</h5>
+                <p class="text-muted">{{ Str::limit($item['description'], 50) }}</p>
+                {{-- Debugging line --}}
+            </div>
+        </a>
+    </div>
+@endforeach
         </div>
     </div>
 </div>

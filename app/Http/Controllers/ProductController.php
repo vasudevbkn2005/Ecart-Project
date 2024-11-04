@@ -39,7 +39,7 @@ class ProductController extends Controller
             $cart->user_id = $request->session()->get('user')['id'];
             $cart->product_id = $request->product_id;
             $cart->save();
-            return redirect('/');
+            return redirect('/cartlist');
         } else {
             return redirect('/login');
         }
@@ -93,4 +93,41 @@ class ProductController extends Controller
         $orders= DB::table('orders')->join('products', 'orders.product_id', 'products.id')->where('orders.user_id', $userId)->get();
         return view('myorders', ['orders' => $orders]);
     }
+
+// Crud Operation
+
+    function dashboard(){
+        $data=Product::all();
+        return view('product/dashboard',['data' => $data]);
+    }
+
+    function create()
+    {
+        return view('product/create');
+    }
+
+    function store(Request $request)
+    {
+        // dd($request->all());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|max:255',
+            'price' => 'required|numeric',
+            'description' => 'nullable|string',
+            'gallery' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $imagePath = $request->file('gallery')->store('images', 'public');
+
+        $product = Product::create([
+            'name' => $request->name,
+            'category' => $request->category,
+            'price' => $request->price,
+            'description' => $request->description,
+            'gallery' => $imagePath,
+        ]);
+
+        return redirect()->route('product.dashboard')->with('success', 'Product created successfully!');
+    }
+
 }

@@ -19,7 +19,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
                             <div class="search-item border rounded p-3">
                                 <a href="detail/{{$item['id']}}" class="text-decoration-none">
-                                    <img class="trending-img img-fluid" src="{{$item['gallery']}}" alt="{{$item['name']}}" height="200px">
+                                    <img class="trending-img img-fluid" src="{{ asset('storage/' . $item['gallery']) }}" alt="{{$item['name']}}" height="200px">
                                     <div class="text-center mt-2">
                                         <h3 class="text-black">{{$item['name']}}</h3>
                                         <h3 class="text-black">${{$item['price']}}</h3>
