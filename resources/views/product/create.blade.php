@@ -4,8 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Product Create</title>
+    <title>Admin Panel - Create Product</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
             background-color: #f4f4f4;
@@ -15,10 +16,22 @@
             height: 100vh;
             position: fixed;
             top: 0;
-            left: 0;
+            left: -250px;
             width: 250px;
             background-color: #343a40;
             padding-top: 20px;
+            transition: left 0.3s;
+            z-index: 1000;
+        }
+
+        .sidebar.show {
+            left: 0;
+        }
+
+        .sidebar h3 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -26,26 +39,33 @@
             padding: 15px;
             text-decoration: none;
             display: block;
+            transition: background-color 0.3s;
         }
 
-        .sidebar a:hover {
+        .sidebar a:hover,
+        .sidebar a.active {
             background-color: #495057;
         }
 
         .content {
-            margin-left: 250px;
+            margin-left: 0;
             padding: 20px;
+            transition: margin-left 0.3s;
+        }
+
+        .content.with-sidebar {
+            margin-left: 250px;
         }
 
         .header {
-            background-color: #007bff;
+            background-color: #343a40;
             color: #fff;
             padding: 15px;
             position: fixed;
             top: 0;
-            left: 250px;
+            left: 0;
             right: 0;
-            z-index: 1000;
+            z-index: 999;
         }
 
         .footer {
@@ -58,11 +78,25 @@
             width: 100%;
         }
 
+        .img-thumbnail {
+            max-width: 100px;
+            height: auto;
+        }
+
+        .btn {
+            margin: 2px;
+        }
+
         @media (max-width: 768px) {
             .sidebar {
-                position: relative;
-                height: auto;
-                width: 100%;
+                position: fixed;
+                height: 100vh;
+                width: 250px;
+                left: -250px;
+            }
+
+            .sidebar.show {
+                left: 0;
             }
 
             .content {
@@ -73,25 +107,36 @@
                 left: 0;
                 right: 0;
             }
+
+            #sidebarToggle {
+                left: 15px;
+                top: 15px;
+                z-index: 1001;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="sidebar">
-        <h3 class="text-white text-center">Admin Panel</h3>
-        <a href="/product/dashboard">Product List</a>
-        <a href="/product/create">Product Create</a>
-        <a href="/product/reports">Reports</a>
-        <a href="/logout">Logout</a>
+    <div class="sidebar" id="sidebar" style="margin-top: 110px">
+        <h3>Admin Panel</h3>
+        <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
+        <a href="/product/create" class="{{ request()->is('product/create') ? 'active' : '' }}">Product Create</a>
+        <a href="/" class="{{ request()->is('logout') ? 'active' : '' }}">Home</a>
+        <a href="/logout" class="{{ request()->is('logout') ? 'active' : '' }}">Logout</a>
     </div>
+
+    <button class="btn btn-primary" id="sidebarToggle" aria-expanded="false" aria-controls="sidebar"
+        style="position: fixed; z-index: 1001; top: 15px; left: 15px;">
+        <i class="fa fa-bars" style="font-size:36px"></i>
+    </button>
 
     <div class="header">
-        <h1>Create Product</h1>
-        <p>Welcome, {{ Session::get('user.name') }}!</p> <!-- Display the admin's name -->
+        <h1 style="margin-left: 100px">Product Create</h1>
+        <p style="margin-left: 100px">Welcome, {{ Session::get('user.name') }}!</p>
     </div>
 
-    <div class="content" style="padding-top: 130px;">
+    <div class="content" id="content" style="padding-top: 130px;">
         <div class="container">
             <h2 class="mb-4">Add a New Product</h2>
             @foreach ($errors->all() as $er)
@@ -99,18 +144,10 @@
             @endforeach
             <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
                 <div class="mb-3">
                     <label for="name" class="form-label">Product Name</label>
-                    <input type="text" class="form-control" id="name" placeholder="Enter Product Name" name="name" required>
+                    <input type="text" class="form-control" id="name" placeholder="Enter Product Name"
+                        name="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="category" class="form-label">Category</label>
@@ -119,20 +156,21 @@
                         <option value="electronics">Electronics</option>
                         <option value="clothing">Clothing</option>
                         <option value="books">Books</option>
-                        <!-- Add more categories -->
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="gallery" class="form-label">Image Upload</label>
                     <input type="file" class="form-control" id="gallery" name="gallery" accept="image/*" required>
+                    <img id="imagePreview" class="img-thumbnail mt-2" style="display:none;" />
                 </div>
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
-                    <input type="number" step="0.01" class="form-control" placeholder="Enter Product Price" id="price" name="price" required>
+                    <input type="number" step="0.01" class="form-control" placeholder="Enter Product Price"
+                        id="price" name="price" required>
                 </div>
                 <div class="mb-3">
                     <label for="description" class="form-label">Description</label>
-                    <input type="text" class="form-control" placeholder="Enter Description" id="description" name="description" required>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Create Product</button>
             </form>
@@ -144,6 +182,28 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+        const toggleButton = document.getElementById('sidebarToggle');
+
+        toggleButton.addEventListener('click', () => {
+            const isOpen = sidebar.classList.toggle('show');
+            content.classList.toggle('with-sidebar');
+            toggleButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.getElementById('gallery').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        });
+    </script>
 </body>
 
 </html>

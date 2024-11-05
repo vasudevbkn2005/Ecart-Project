@@ -85,9 +85,7 @@ h1, h4 {
     font-weight: bold;
 }
 
-button {
-    width: 100%;
-}
+
 
 button:hover {
     background-color: #0056b3; /* Darker blue */

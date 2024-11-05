@@ -1,6 +1,10 @@
 @extends('master')
 
 @section('content')
+<form class="d-flex d-md-none mb-3" action="" method="GET">
+    <input type="text" class="form-control search-input" name="query" placeholder="Search products..." required>
+    <button class="btn btn-success ms-2" type="submit">Search</button>
+</form>
 <div class="custom-product">
     <div class="row mb-10">
         <div class="col-md-9 col-sm-12 mx-auto">
@@ -55,6 +59,28 @@
 @endsection
 
 <style>
+.search-input {
+    border-radius: 25px; /* Rounded corners */
+    border: 1px solid #ccc; /* Light border */
+    padding: 10px 15px; /* Padding for better spacing */
+    transition: border-color 0.3s ease;
+}
+
+.search-input:focus {
+    border-color: #007bff; /* Change border color on focus */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Add shadow on focus */
+}
+
+.btn-success {
+    border-radius: 25px; /* Match the button style to the input */
+    padding: 10px 15px; /* Adjust button padding */
+    transition: background-color 0.3s ease;
+}
+
+.btn-success:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
 .custom-product {
     padding: 40px;
     background-color: #f4f4f4;
@@ -92,10 +118,6 @@ h1, h4 {
 .text-danger {
     font-size: 1.25rem;
     font-weight: bold;
-}
-
-button {
-    width: 100%;
 }
 
 button:hover {

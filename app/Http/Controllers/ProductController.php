@@ -8,6 +8,7 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -129,5 +130,62 @@ class ProductController extends Controller
 
         return redirect()->route('product.dashboard')->with('success', 'Product created successfully!');
     }
+    public function edit($id)
+    {
+        // Fetch the product by ID or fail if not found
+        $product = Product::findOrFail($id);
 
+        // Return the edit view with the product data
+        return view('product.edit', compact('product'));
+    }
+    public function update(Request $request, $id)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'gallery' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+        ]);
+
+        // Find the product by ID or fail if not found
+        $product = Product::findOrFail($id);
+
+        // Update product details
+        $product->name = $request->name;
+        $product->category = $request->category;
+        $product->price = $request->price;
+        $product->description = $request->description;
+
+        // Handle file upload for the image
+        if ($request->hasFile('gallery')) {
+            // Store the new image and update the path in the database
+            $path = $request->file('gallery')->store('images', 'public');
+            $product->gallery = $path;
+        }
+
+        // Save the updated product
+        $product->save();
+
+        // Redirect back to the product dashboard with a success message
+        return redirect()->route('product.dashboard')->with('success', 'Product updated successfully!');
+    }
+    public function destroy($id)
+    {
+        // Find the product by ID or fail if not found
+        $product = Product::findOrFail($id);
+
+        // Optionally, delete the product's image file from storage
+        if ($product->gallery) {
+            Storage::disk('public')->delete($product->gallery);
+        }
+
+        // Delete the product
+        $product->delete();
+
+        // Redirect back to the product dashboard with a success message
+        return redirect()->route('product.dashboard')->with('success', 'Product deleted successfully!');
+    }
+    
 }

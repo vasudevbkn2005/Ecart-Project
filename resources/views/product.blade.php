@@ -1,24 +1,36 @@
 @extends('master')
 
 @section('content')
+<!-- Search Form visible only on mobile -->
+<form class="d-flex d-md-none mb-3" action="/search" method="GET">
+    <input type="text" class="form-control" name="query" placeholder="Search products..." required>
+    <button class="btn btn-success" type="submit">Search</button>
+</form>
+
 <div class="custom-product">
     <div class="container mb-4">
         <h1 class="text-center">Products</h1>
     </div>
-    <div class="trending-wrapping">
-        <div class="d-flex flex-wrap justify-content-center">
-           @foreach ($products as $item)
-    <div class="trending-item col-md-3 col-sm-6 mb-4">
-        <a href="detail/{{ $item['id'] }}" class="text-decoration-none">
-            <img class="trending-image img-fluid" src="{{ asset('storage/' . $item['gallery']) }}" alt="{{ $item['name'] }}">
-            <div class="p-3">
-                <h5 class="text-black">{{ $item['name'] }}</h5>
-                <p class="text-muted">{{ Str::limit($item['description'], 50) }}</p>
-                {{-- Debugging line --}}
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <!-- Optionally, you can include a mobile search bar here too if you want it to be on the side -->
+        </div>
+        <div class="col-md-9">
+            <div class="trending-wrapping">
+                <div class="d-flex flex-wrap justify-content-center">
+                    @foreach ($products as $item)
+                    <div class="trending-item col-md-4 col-sm-6 mb-4">
+                        <a href="detail/{{ $item['id'] }}" class="text-decoration-none">
+                            <img class="trending-image img-fluid" src="{{ asset('storage/' . $item['gallery']) }}" alt="{{ $item['name'] }}">
+                            <div class="p-3">
+                                <h5 class="text-black">{{ $item['name'] }}</h5>
+                                <p class="text-muted">{{ Str::limit($item['description'], 50) }}</p>
+                            </div>
+                        </a>
+                    </div>
+                    @endforeach
+                </div>
             </div>
-        </a>
-    </div>
-@endforeach
         </div>
     </div>
 </div>

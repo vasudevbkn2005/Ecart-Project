@@ -1,5 +1,9 @@
 @extends('master')
 @section('content')
+<form class="d-flex d-md-none mb-3" action="" method="GET">
+    <input type="text" class="form-control" name="query" placeholder="Search products..." required>
+    <button class="btn btn-success" type="submit">Search</button>
+</form>
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6 mb-4 mb-md-0">

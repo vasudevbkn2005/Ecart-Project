@@ -31,6 +31,9 @@ Route::middleware(['auth.redirect'])->group(function () {
     Route::get('/product/dashboard', [ProductController::class, 'dashboard'])->name('product.dashboard');
     Route::get('/product/create', [ProductController::class, 'create'])->name('product.create');
     Route::post('/product', [ProductController::class, 'store'])->name('product.store');
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit'])->name('product.edit');
+    Route::put('/product/{id}', [ProductController::class, 'update'])->name('product.update');
+    Route::delete('/product/{id}', [ProductController::class, 'destroy'])->name('product.destroy');
     // Add other admin routes here
 });
 

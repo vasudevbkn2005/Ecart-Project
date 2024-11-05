@@ -73,7 +73,7 @@
 
 button {
     margin-top: 20px;
-    width: 100%;
+
 }
 
 button:hover {

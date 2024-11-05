@@ -2,15 +2,57 @@
 @section('content')
 
 <div class="custom-product">
-    <div class="row mb-4">
-        <div class="col-md-3 col-sm-12">
+    <form class="d-flex d-md-none mb-3" action="/search" method="GET">
+    <input type="text" class="form-control" name="query" placeholder="Search products..." required>
+    <button class="btn btn-success" type="submit">Search</button>
+</form>
+    <div class="row">
+        <!-- Filter Sidebar (Only visible on medium and larger screens) -->
+        <div class="col-md-3 col-sm-12 filter-sidebar" id="filterSidebar">
             <h5>Filter</h5>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolores, sed quia? Autem fugiat quisquam doloremque vitae similique! Quas nam corrupti delectus sed sequi. Fuga ad omnis nobis in quam delectus.
-            Nostrum earum repellendus ipsam, deserunt voluptatum sapiente aspernatur eligendi id officiis in nobis accusamus vitae modi repudiandae, quia cum pariatur rerum magni voluptatem eveniet, harum autem officia. Reiciendis, distinctio beatae.
-            Fugiat omnis corrupti inventore dicta soluta, nisi veritatis neque, quidem enim doloremque aspernatur provident quisquam praesentium officiis optio sapiente corporis molestiae minus modi numquam earum iste unde fugit? A, tempore!
-            At recusandae eaque rerum explicabo sed sapiente quo repellat veniam, earum quae quam, ad excepturi cumque? Blanditiis at quisquam earum, modi veniam officiis itaque quis deserunt recusandae numquam, laborum beatae!
-            Officiis suscipit tempore doloremque tenetur quo animi numquam eum, assumenda ipsa asperiores illum autem recusandae sit cum ipsum voluptate vel neque mollitia porro, blanditiis placeat distinctio! Rerum ullam nihil repudiandae.
+            
+            <!-- Category Filter -->
+            <div class="mb-3">
+                <h6>Categories</h6>
+                <select class="form-control" name="category">
+                    <option value="">All Categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="home">Home</option>
+                    <!-- Add more categories as needed -->
+                </select>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="mb-3">
+                <h6>Price Range</h6>
+                <select class="form-control" name="price">
+                    <option value="">Any Price</option>
+                    <option value="0-50">$0 - $50</option>
+                    <option value="50-100">$50 - $100</option>
+                    <option value="100-200">$100 - $200</option>
+                    <option value="200-500">$200 - $500</option>
+                    <option value="500+">$500+</option>
+                </select>
+            </div>
+
+            <!-- Brand Filter -->
+            <div class="mb-3">
+                <h6>Brands</h6>
+                <select class="form-control" name="brand">
+                    <option value="">Any Brand</option>
+                    <option value="nike">Nike</option>
+                    <option value="apple">Apple</option>
+                    <option value="samsung">Samsung</option>
+                    <!-- Add more brands as needed -->
+                </select>
+            </div>
+
+            <!-- Submit Filter Button -->
+            <button class="btn btn-primary btn-block">Apply Filters</button>
         </div>
+
+        <!-- Product Listings -->
         <div class="col-md-9 col-sm-12">
             <div class="trending-wrapper">
                 <h1>Search Results</h1>
@@ -36,31 +78,85 @@
 </div>
 
 @endsection
+
 <style>
     .custom-product {
-    padding: 20px;
-}
+        padding: 20px;
+    }
 
-.search-item {
-    transition: transform 0.2s;
-}
+    .filter-sidebar {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-.search-item:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
+    .search-item {
+        transition: transform 0.2s;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
 
-.trending-img {
-    border-radius: 8px;
-    object-fit: cover; /* Ensures the image covers the area without distortion */
-}
+    .search-item:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
-.text-center h3 {
-    font-size: 1.25rem; /* Adjust font size as needed */
-}
+    .trending-img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+    }
 
-.text-center h5 {
-    font-size: 1rem; /* Adjust font size as needed */
-}
+    .text-center h3 {
+        font-size: 1.25rem;
+    }
 
+    .text-center h5 {
+        font-size: 1rem;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        /* Hide the filter sidebar completely on smaller screens */
+        .filter-sidebar {
+            display: none !important; /* This hides the filter on mobile devices */
+        }
+
+        /* Adjust layout for small screens */
+        .search-item {
+            padding: 15px;
+        }
+
+        .custom-product {
+            padding: 15px;
+        }
+
+        .text-center h3 {
+            font-size: 1.1rem;
+        }
+
+        .text-center h5 {
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .text-center h3 {
+            font-size: 1rem;
+        }
+
+        .text-center h5 {
+            font-size: 0.8rem;
+        }
+
+        .search-item {
+            padding: 10px;
+        }
+
+        .custom-product {
+            padding: 10px;
+        }
+    }
 </style>
