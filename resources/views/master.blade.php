@@ -174,10 +174,10 @@
         <div class="footer-content">
             <p>&copy; 2024 MyShop. All rights reserved.</p>
             <div class="social-links">
-                <a href="https://www.facebook.com/yourprofile" target="_blank" aria-label="Facebook">
+                <a href="#" target="_blank" aria-label="Facebook">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" alt="Facebook Icon">
                 </a>
-                <a href="https://wa.me/yourphonenumber" target="_blank" aria-label="WhatsApp">
+                <a href="https://wa.me/8824599891" target="_blank" aria-label="WhatsApp">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/WhatsApp.svg/2044px-WhatsApp.svg.png" alt="WhatsApp Icon">
                 </a>
                 <!-- Add more social icons as needed -->

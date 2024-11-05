@@ -12,7 +12,7 @@
         <div class="col-md-6 d-flex flex-column justify-content-between">
             <div>
                 <h3 class="mb-3">{{ $product['name'] }}</h3>
-                <h4 class="text-success">Price: ${{ number_format($product['price'], 2) }}</h4>
+                <h4 class="text-success">Price: ₹{{ number_format($product['price'], 2) }}</h4>
                 <h5 style=" text-transform: capitalize;">Category: {{ $product['category'] }}</h5>
                 <p class="mt-3">{{ $product['description'] }}</p>
             </div>
