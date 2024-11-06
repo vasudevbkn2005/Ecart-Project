@@ -120,6 +120,9 @@
 <body>
     <div class="sidebar" id="sidebar" style="margin-top: 110px">
         <h3>Admin Panel</h3>
+        <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category
+            List</a>
+        <a href="/category/create" class="{{ request()->is('category/create') ? 'active' : '' }}">Category Create</a>
         <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
         <a href="/product/create" class="{{ request()->is('product/create') ? 'active' : '' }}">Product Create</a>
         <a href="/" class="{{ request()->is('logout') ? 'active' : '' }}">Home</a>
@@ -153,9 +156,9 @@
                     <label for="category" class="form-label">Category</label>
                     <select class="form-control" id="category" name="category" required>
                         <option value="">Select a category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="books">Books</option>
+                        @foreach ($category as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mb-3">

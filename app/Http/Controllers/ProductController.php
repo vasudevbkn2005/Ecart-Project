@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Cart;
+use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -95,6 +96,18 @@ class ProductController extends Controller
         return view('myorders', ['orders' => $orders]);
     }
 
+    public function showByCategory($id)
+    {
+        // Find the category by ID
+        $category = Category::findOrFail($id);
+
+        // Retrieve products that belong to this category using the relationship
+        $products = $category->products;  // Eloquent will automatically fetch the related products
+
+        // Return the view with the category and products
+        return view('product', compact('category', 'products'));
+    }
+
 // Crud Operation
 
     function dashboard(){
@@ -104,25 +117,33 @@ class ProductController extends Controller
 
     function create()
     {
-        return view('product/create');
+        
+        $category = Category::all();
+        return view('product/create',['category'=>$category]);
     }
-
-    function store(Request $request)
+    public function store(Request $request)
     {
-        // dd($request->all());
+        // Validate the request data
         $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'category' => 'required|exists:categories,id',  // Ensure category ID exists
             'price' => 'required|numeric',
             'description' => 'nullable|string',
             'gallery' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imagePath = $request->file('gallery')->store('images', 'public');
+        // Handle the image upload
+        $imagePath = null;
+        if ($request->hasFile('gallery')) {
+            $imagePath = $request->file('gallery')->store('images', 'public');
+        } else {
+            return back()->withErrors(['gallery' => 'Image upload failed.']);
+        }
 
+        // Create the product with the data
         $product = Product::create([
             'name' => $request->name,
-            'category' => $request->category,
+            'category_id' => $request->category,  // Use category ID, not name
             'price' => $request->price,
             'description' => $request->description,
             'gallery' => $imagePath,

@@ -130,9 +130,10 @@
 <body>
     <div class="sidebar" id="sidebar" style="margin-top: 110px">
         <h3 class="text-white text-center">Admin Panel</h3>
-       <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category List</a>
+        <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category
+            List</a>
         <a href="/category/create" class="{{ request()->is('category/create') ? 'active' : '' }}">Category Create</a>
-         <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
+        <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
         <a href="/product/create" class="{{ request()->is('product/create') ? 'active' : '' }}">Product Create</a>
         <a href="/" class="{{ request()->is('logout') ? 'active' : '' }}">Home</a>
         <a href="/logout" class="{{ request()->is('logout') ? 'active' : '' }}">Logout</a>
@@ -144,22 +145,20 @@
     </button>
 
     <div class="header">
-        <h1 style="margin-left: 100px">Product List</h1>
+        <h1 style="margin-left: 100px">Category List</h1>
         <p style="margin-left: 100px">Welcome, {{ Session::get('user.name') }}!</p>
     </div>
 
     <div class="content" id="content" style="padding-top: 130px;">
         <div class="container">
-            <h2 class="mb-4">Products</h2>
+            <h2 class="mb-4">Category</h2>
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>S.No</th>
                             <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
+                            <th>Category Name</th>
                             <th>Description</th>
                             <th>Edit</th>
                             <th>Delete</th>
@@ -170,23 +169,21 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                    <img src="{{ asset('storage/' . $item->gallery) ?: asset('path/to/placeholder-image.jpg') }}"
+                                    <img src="{{ asset('storage/' . $item->image) ?: asset('path/to/placeholder-image.jpg') }}"
                                         class="img-thumbnail" alt="{{ $item->name }}">
                                 </td>
                                 <td>{{ $item->name }}</td>
-                                <td>{{ $item->category['name'] }}</td>
-                                <td>₹{{ number_format($item->price, 2) }}</td>
                                 <td>{{ $item->description }}</td>
                                 <td>
-                                    <a href="/product/edit/{{ $item->id }}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="/category/edit/{{ $item->id }}" class="btn btn-warning btn-sm">Edit</a>
                                 </td>
                                 <td>
-                                    <form action="{{ route('product.destroy', $item->id) }}" method="POST"
+                                    <form action="{{ route('category.destroy', $item->id) }}" method="POST"
                                         style="display:inline;">
                                         @csrf
                                         @method('DELETE') <!-- Use DELETE method -->
                                         <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+                                            onclick="return confirm('Are you sure you want to delete this category?')">Delete</button>
                                     </form>
                                 </td>
                             </tr>

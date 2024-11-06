@@ -114,7 +114,9 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar" style="margin-top: 110px">
         <h3 class="text-white text-center">Admin Panel</h3>
-        <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
+     <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category List</a>
+        <a href="/category/create" class="{{ request()->is('category/create') ? 'active' : '' }}">Category Create</a>
+         <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
         <a href="/product/create" class="{{ request()->is('product/create') ? 'active' : '' }}">Product Create</a>
         <a href="/" class="{{ request()->is('logout') ? 'active' : '' }}">Home</a>
         <a href="/logout" class="{{ request()->is('logout') ? 'active' : '' }}">Logout</a>

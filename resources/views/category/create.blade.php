@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel</title>
+    <title>Admin Panel - Create Category</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
@@ -17,19 +17,21 @@
             position: fixed;
             top: 0;
             left: -250px;
-            /* Start hidden off-screen */
             width: 250px;
             background-color: #343a40;
             padding-top: 20px;
             transition: left 0.3s;
-            /* Smooth transition */
             z-index: 1000;
-            /* Ensure it sits above other content */
         }
 
         .sidebar.show {
             left: 0;
-            /* Slide in */
+        }
+
+        .sidebar h3 {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
         }
 
         .sidebar a {
@@ -37,6 +39,7 @@
             padding: 15px;
             text-decoration: none;
             display: block;
+            transition: background-color 0.3s;
         }
 
         .sidebar a:hover,
@@ -46,15 +49,12 @@
 
         .content {
             margin-left: 0;
-            /* No margin when sidebar is hidden */
             padding: 20px;
             transition: margin-left 0.3s;
-            /* Smooth transition */
         }
 
         .content.with-sidebar {
             margin-left: 250px;
-            /* Margin for content when sidebar is visible */
         }
 
         .header {
@@ -66,7 +66,6 @@
             left: 0;
             right: 0;
             z-index: 999;
-            /* Ensure header is above sidebar */
         }
 
         .footer {
@@ -81,14 +80,11 @@
 
         .img-thumbnail {
             max-width: 100px;
-            /* Set max width for images */
             height: auto;
         }
 
-        /* Ensure buttons are visible */
         .btn {
             margin: 2px;
-            /* Margin for better spacing */
         }
 
         @media (max-width: 768px) {
@@ -97,17 +93,14 @@
                 height: 100vh;
                 width: 250px;
                 left: -250px;
-                /* Start hidden off-screen */
             }
 
             .sidebar.show {
                 left: 0;
-                /* Slide in */
             }
 
             .content {
                 margin-left: 0;
-                /* No margin when sidebar is hidden */
             }
 
             .header {
@@ -117,11 +110,8 @@
 
             #sidebarToggle {
                 left: 15px;
-                /* Position the button on the left */
                 top: 15px;
-                /* Position the button at the top */
                 z-index: 1001;
-                /* Ensure the toggle button is above other elements */
             }
         }
     </style>
@@ -129,11 +119,12 @@
 
 <body>
     <div class="sidebar" id="sidebar" style="margin-top: 110px">
-        <h3 class="text-white text-center">Admin Panel</h3>
-       <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category List</a>
+        <h3>Admin Panel</h3>
+        <a href="/category/dashboard" class="{{ request()->is('category/dashboard') ? 'active' : '' }}">Category List</a>
         <a href="/category/create" class="{{ request()->is('category/create') ? 'active' : '' }}">Category Create</a>
          <a href="/product/dashboard" class="{{ request()->is('product/dashboard') ? 'active' : '' }}">Product List</a>
         <a href="/product/create" class="{{ request()->is('product/create') ? 'active' : '' }}">Product Create</a>
+
         <a href="/" class="{{ request()->is('logout') ? 'active' : '' }}">Home</a>
         <a href="/logout" class="{{ request()->is('logout') ? 'active' : '' }}">Logout</a>
     </div>
@@ -144,59 +135,40 @@
     </button>
 
     <div class="header">
-        <h1 style="margin-left: 100px">Product List</h1>
+        <h1 style="margin-left: 100px">Category Create</h1>
         <p style="margin-left: 100px">Welcome, {{ Session::get('user.name') }}!</p>
     </div>
 
     <div class="content" id="content" style="padding-top: 130px;">
         <div class="container">
-            <h2 class="mb-4">Products</h2>
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>S.No</th>
-                            <th>Image</th>
-                            <th>Product Name</th>
-                            <th>Category</th>
-                            <th>Price</th>
-                            <th>Description</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $item)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>
-                                    <img src="{{ asset('storage/' . $item->gallery) ?: asset('path/to/placeholder-image.jpg') }}"
-                                        class="img-thumbnail" alt="{{ $item->name }}">
-                                </td>
-                                <td>{{ $item->name }}</td>
-                                <td>{{ $item->category['name'] }}</td>
-                                <td>₹{{ number_format($item->price, 2) }}</td>
-                                <td>{{ $item->description }}</td>
-                                <td>
-                                    <a href="/product/edit/{{ $item->id }}" class="btn btn-warning btn-sm">Edit</a>
-                                </td>
-                                <td>
-                                    <form action="{{ route('product.destroy', $item->id) }}" method="POST"
-                                        style="display:inline;">
-                                        @csrf
-                                        @method('DELETE') <!-- Use DELETE method -->
-                                        <button type="submit" class="btn btn-danger btn-sm"
-                                            onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            <h2 class="mb-4">Add a New Category</h2>
+            @foreach ($errors->all() as $er)
+                <h4 class="alert alert-danger">{{ $er }}</h4>
+            @endforeach
+            <form action="{{ route('category.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="mb-3">
+                    <label for="name" class="form-label">Category Name</label>
+                    <input type="text" class="form-control" id="name" placeholder="Enter Category Name"
+                        name="name" required>
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image Upload</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
+                    <img id="imagePreview" class="img-thumbnail mt-2" style="display:none;" />
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Create category</button>
+            </form>
         </div>
     </div>
 
+    <div class="footer">
+        <p>&copy; 2024 Your Company</p>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -208,6 +180,17 @@
             const isOpen = sidebar.classList.toggle('show');
             content.classList.toggle('with-sidebar');
             toggleButton.setAttribute('aria-expanded', isOpen);
+        });
+
+        document.getElementById('gallery').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.src = e.target.result;
+                imagePreview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
         });
     </script>
 </body>
