@@ -60,10 +60,10 @@ Route::view('/register', 'register');
 // Route::post("/register", [UserController::class, 'register']);
 
 // Category
-Route::get("/category", [CategoryController::class, 'index']);
+Route::get("/", [CategoryController::class, 'index']);
 
 // Product
-Route::get("/", [ProductController::class, 'index']);
+Route::get("/product", [ProductController::class, 'index']);
 Route::get("detail/{id}", [ProductController::class, 'detail']);
 Route::get("search", [ProductController::class, 'search']);
 Route::post("add_to_cart", [ProductController::class, 'add']);
